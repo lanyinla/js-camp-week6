@@ -22,6 +22,11 @@ const ADMIN_TOKEN = process.env.API_KEY;
  * @returns {Promise<Array>} - 回傳 products 陣列
  */
 async function getProducts() {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/products`);
+	const data = await response.json();
+	// console.log("這是我印的：")
+	// console.table(data.products);
+	return data.products;
 	// 請實作此函式
 	// 提示：
 	// 1. 使用 fetch() 發送 GET 請求
@@ -34,6 +39,13 @@ async function getProducts() {
  * @returns {Promise<Object>} - 回傳 { carts: [...], total: 數字, finalTotal: 數字 }
  */
 async function getCart() {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`);
+	const data = await response.json();
+	return {
+		carts: data.carts,
+		total: data.total,
+		finalTotal: data.finalTotal
+	};
 	// 請實作此函式
 }
 
@@ -42,7 +54,19 @@ async function getCart() {
  * @returns {Promise<Object>} - 回傳 { success: boolean, data?: [...], error?: string }
  */
 async function getProductsSafe() {
+	try{
+		const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/products`);
+		if (response.ok) {
+			const data = await response.json();
+			return { success: true, data: [data.products] }
+		}else {
+			throw new Error('伺服器出錯啦')
+		}
+	} catch{
+		return { success: false, errormeg: "請確認API網址" }
+	}
 	// 請實作此函式
+
 	// 提示：
 	// 1. 加上 try-catch 處理錯誤
 	// 2. 檢查 response.ok 判斷是否成功
