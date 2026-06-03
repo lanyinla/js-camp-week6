@@ -63,7 +63,7 @@ async function getProductsSafe() {
 			throw new Error('伺服器出錯啦')
 		}
 	} catch{
-		return { success: false, errormeg: "請確認API網址" }
+		return { success: false, error: error.message || "請確認API網址" }
 	}
 	// 請實作此函式
 
@@ -85,6 +85,17 @@ async function getProductsSafe() {
  * @returns {Promise<Object>} - 回傳更新後的購物車資料
  */
 async function addToCart(productId, quantity) {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`,{
+		method: "POST",
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({
+				"data": {
+				"productId": productId,
+				"quantity": quantity
+  				}
+			})});
+			const data = await response.json();
+			return data
 	// 請實作此函式
 	// 提示：
 	// 1. 發送 POST 請求
@@ -95,11 +106,21 @@ async function addToCart(productId, quantity) {
 
 /**
  * 2. 編輯購物車商品數量
- * @param {string} cartId - 購物車項目 ID
+ * @param {string} cartId - 購物車項目 ID  // "H85BulQGBS92Wr71uaIh"
  * @param {number} quantity - 新數量
  * @returns {Promise<Object>} - 回傳更新後的購物車資料
  */
 async function updateCartItem(cartId, quantity) {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`,
+		{
+			method: "PATCH",
+			headers:  { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ data: { id: cartId, quantity: quantity } }),
+		}
+	)
+	const data = await response.json();
+	console.log("印", data)
+	return data
 	// 請實作此函式
 	// 提示：
 	// 1. 發送 PATCH 請求
@@ -112,6 +133,13 @@ async function updateCartItem(cartId, quantity) {
  * @returns {Promise<Object>} - 回傳更新後的購物車資料
  */
 async function removeCartItem(cartId) {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts/${cartId}`,
+		{
+			method: "DELETE",
+		}
+	)
+	const data = await response.json();
+	return data;
 	// 請實作此函式
 	// 提示：發送 DELETE 請求到 /carts/{id}
 }
@@ -121,6 +149,13 @@ async function removeCartItem(cartId) {
  * @returns {Promise<Object>} - 回傳清空後的購物車資料
  */
 async function clearCart() {
+	const response = await fetch(`${BASE_URL}/api/livejs/v1/customer/${API_PATH}/carts`,
+		{
+			method: "DELETE",
+		}
+	)
+	const data = await response.json();
+	return data;
 	// 請實作此函式
 	// 提示：發送 DELETE 請求到 /carts
 }
