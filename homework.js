@@ -169,13 +169,24 @@ async function clearCart() {
 
 1. HTTP 狀態碼的分類（1xx, 2xx, 3xx, 4xx, 5xx 各代表什麼）
    答：
+1xx => 資訊回應，請稍候
+2xx => 成功回應 response.ok = true
+3xx => 重新導向訊息，幫轉
+4xx => 用戶端錯誤回應，給錯的請求或是權限不足、找不到等等問題
+5xx => 伺服器錯誤回應，後端工程師要出動了
 
 2. GET、POST、PATCH、PUT、DELETE 的差異
    答：
+   GET => 讀取
+   POST => 新增
+   PATCH => 部分修改
+   PUT => 替換修改
+   DELETE => 刪除
 
 3. 什麼是 RESTful API？
    答：
-
+一種API 網址命名與設計風格（規範）
+讓網址變乾淨
 
 */
 
